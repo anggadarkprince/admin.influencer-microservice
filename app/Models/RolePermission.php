@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RolePermission extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var string[]|bool
+     */
+    protected $guarded = ['id'];
 }

@@ -9,6 +9,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,16 +17,22 @@ class UserController extends Controller
 {
     public function index()
     {
+        Gate::authorize('view', 'users');
+
         return User::paginate();
     }
 
     public function show($id)
     {
+        Gate::authorize('view', 'users');
+
         return User::find($id);
     }
 
     public function store(UserCreateRequest $request)
     {
+        Gate::authorize('create', 'users');
+
         $user = User::create([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
@@ -38,6 +45,8 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
+        Gate::authorize('edit', 'users');
+
         $user = User::find($id);
 
         $user->update($request->only(['first_name', 'last_name', 'email']));
@@ -47,6 +56,8 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        Gate::authorize('delete', 'users');
+
         User::destroy($id);
 
         return response(null, Response::HTTP_NO_CONTENT);

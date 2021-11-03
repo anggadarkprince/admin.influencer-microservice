@@ -24,7 +24,8 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'password' => 'required',
+            'password_confirm' => 'required|same:password',
         ];
     }
 }

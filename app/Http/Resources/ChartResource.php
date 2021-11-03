@@ -7,22 +7,19 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JsonSerializable;
 
-class ProductResource extends JsonResource
+class ChartResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array|Arrayable|JsonSerializable
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'image' => $this->image,
-            'price' => $this->price,
+            'date' => $this->date,
+            'sum' => (float)$this->sum,
         ];
     }
 }

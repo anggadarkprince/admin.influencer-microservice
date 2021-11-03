@@ -52,6 +52,17 @@ class UserController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
+    public function user()
+    {
+        $user = Auth::user();
+
+        return (new UserResource($user))->additional([
+            'data' => [
+                'permissions' => $user->permissions(),
+            ],
+        ]);
+    }
+
     public function updateInfo(UpdateInfoRequest $request)
     {
         $user = Auth::user();

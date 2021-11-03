@@ -19,28 +19,29 @@ class UserController extends Controller
     {
         Gate::authorize('view', 'users');
 
-        return User::paginate();
+        $users = User::paginate();
+
+        return UserResource::collection($users);
     }
 
     public function show($id)
     {
         Gate::authorize('view', 'users');
 
-        return User::find($id);
+        $user = User::find($id);
+
+        return new UserResource($user);
     }
 
     public function store(UserCreateRequest $request)
     {
         Gate::authorize('create', 'users');
 
-        $user = User::create([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password', 1234)),
-        ]);
+        $user = User::create($request->only('first_name', 'last_name', 'email', 'role_id')
+            + ['password' => Hash::make($request->input('password', 1234))]
+        );
 
-        return response($user, Response::HTTP_CREATED);
+        return response(new UserResource($user), Response::HTTP_CREATED);
     }
 
     public function update(UserUpdateRequest $request, $id)
@@ -51,7 +52,7 @@ class UserController extends Controller
 
         $user->update($request->only(['first_name', 'last_name', 'email']));
 
-        return response($user, Response::HTTP_ACCEPTED);
+        return response(new UserResource($user), Response::HTTP_ACCEPTED);
     }
 
     public function destroy($id)

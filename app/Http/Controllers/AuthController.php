@@ -38,6 +38,8 @@ class AuthController extends Controller
             ]
         );
 
-        return response($user, Response::HTTP_CREATED);
+        $token = $user->createToken('admin')->accessToken;
+
+        return response(['user' => $user, 'token' => $token], Response::HTTP_CREATED);
     }
 }

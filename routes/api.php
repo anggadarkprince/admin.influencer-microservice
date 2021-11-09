@@ -21,17 +21,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('upload', [ImageController::class, 'upload']);
-    Route::get('export', [OrderController::class, 'export']);
-    Route::get('chart', [DashboardController::class, 'chart']);
+    Route::post('upload', [ImageController::class, 'upload'])->name('upload');
+    Route::get('export', [OrderController::class, 'export'])->name('order-export');
+    Route::get('chart', [DashboardController::class, 'chart'])->name('dashboard-chart');
 
-    Route::get('user', [UserController::class, 'user']);
-    Route::put('users/info', [UserController::class, 'updateInfo']);
-    Route::put('users/password', [UserController::class, 'updatePassword']);
+    Route::get('user', [UserController::class, 'user'])->name('users.profile');
+    Route::put('users/info', [UserController::class, 'updateInfo'])->name('users.info');
+    Route::put('users/password', [UserController::class, 'updatePassword'])->name('users.update-password');
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);

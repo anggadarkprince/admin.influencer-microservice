@@ -14,9 +14,11 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
+            'code' => uniqid('ODR-'),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
+            'influencer_email' => $this->faker->email,
             'created_at' => $this->faker->dateTime,
         ];
     }

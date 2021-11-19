@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
@@ -15,7 +16,9 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        Order::factory(30)->create()
+        Order::factory(30)->create([
+            'user_id' => User::all()->random()->id
+        ])
             ->each(function (Order $order) {
                 OrderItem::factory(random_int(1, 5))->create([
                     'order_id' => $order->id

@@ -22,6 +22,8 @@ class OrderItemResource extends JsonResource
             'product_title' => $this->product_title,
             'price' => (float)$this->price,
             'quantity' => (int)$this->quantity,
+            'influencer_revenue' => (float)$this->influencer_revenue,
+            'admin_revenue' => (float)$this->admin_revenue,
         ];
     }
 }

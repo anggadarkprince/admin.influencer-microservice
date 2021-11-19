@@ -14,7 +14,8 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'code' => uniqid('ODR-'),
+            'transaction_id' => uniqid('TRX-'),
+            'code' => uniqid(),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,

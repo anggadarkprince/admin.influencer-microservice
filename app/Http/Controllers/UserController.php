@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         Gate::authorize('view', 'users');
 
-        $users = User::paginate();
+        $users = User::orderBy('created_at', 'desc')->paginate();
 
         return UserResource::collection($users);
     }

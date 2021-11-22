@@ -13,7 +13,7 @@ class OrderController extends Controller
     {
         Gate::authorize('view', 'orders');
 
-        $order = Order::paginate();
+        $order = Order::orderBy('created_at', 'desc')->paginate();
 
         return OrderResource::collection($order);
     }

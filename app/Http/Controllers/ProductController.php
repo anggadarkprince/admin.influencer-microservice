@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         Gate::authorize('view', 'products');
 
-        $products = Product::paginate();
+        $products = Product::orderBy('created_at', 'desc')->paginate();
 
         return ProductResource::collection($products);
     }

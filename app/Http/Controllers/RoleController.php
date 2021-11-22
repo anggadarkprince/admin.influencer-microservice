@@ -16,7 +16,7 @@ class RoleController extends Controller
     {
         Gate::authorize('view', 'roles');
 
-        return RoleResource::collection(Role::all());
+        return RoleResource::collection(Role::orderBy('id', 'desc')->get());
     }
 
     public function store(Request $request)

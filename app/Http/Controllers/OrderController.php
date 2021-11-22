@@ -18,6 +18,15 @@ class OrderController extends Controller
         return OrderResource::collection($order);
     }
 
+    public function latestTransaction()
+    {
+        Gate::authorize('view', 'orders');
+
+        $orders = Order::orderBy('created_at', 'desc')->take(5)->get();
+
+        return OrderResource::collection($orders);
+    }
+
     public function show($id)
     {
         Gate::authorize('view', 'orders');

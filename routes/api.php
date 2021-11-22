@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user', [UserController::class, 'user'])->name('users.profile');
     Route::put('users/info', [UserController::class, 'updateInfo'])->name('users.info');
     Route::put('users/password', [UserController::class, 'updatePassword'])->name('users.update-password');
+    Route::get('orders/latest', [OrderController::class, 'latestTransaction'])->name('orders.latest');
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('roles', RoleController::class);

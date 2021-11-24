@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class AuthController extends Controller
             $token = $user->createToken('admin')->accessToken;
             $cookie = $this->getCookie($token);
 
+            $user->permissions = $user->permissions();
             return response()->json([
                 'token' => $token,
                 'user' => $user,

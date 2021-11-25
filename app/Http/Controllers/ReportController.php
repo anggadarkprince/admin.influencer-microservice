@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use DB;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ReportController extends Controller
 {
@@ -27,11 +30,27 @@ class ReportController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->getBaseOrder()->orderBy('id', 'desc')->paginate();
+        $query = $this->getBaseOrder()->orderBy('id', 'desc');
 
-        return response()->json($orders);
+        if (!empty($q = $request->get('q'))) {
+            $columns = Schema::getColumnListing('orders');
+            $query->where(function (Builder $query) use ($q, $columns) {
+                foreach ($columns as $column) {
+                    $search = $q;
+                    if (in_array(DB::getSchemaBuilder()->getColumnType('orders', $column), ['date', 'datetime'])) {
+                        try {
+                            $search = Carbon::parse($q)->format('Y-m-d');
+                        } catch (InvalidFormatException $e) {
+                        }
+                    }
+                    $query->orWhere($column, 'LIKE', '%' . trim($search) . '%');
+                }
+            });
+        }
+
+        return response()->json($query->paginate());
     }
 
     public function currentMonth()

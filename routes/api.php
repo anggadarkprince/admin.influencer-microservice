@@ -26,12 +26,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('upload', [ImageController::class, 'upload'])->name('upload');
     Route::get('export', [OrderController::class, 'export'])->name('order-export');
     Route::get('chart', [DashboardController::class, 'chart'])->name('dashboard-chart');
-    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/current-month', [ReportController::class, 'currentMonth'])->name('reports.current-month');
     Route::get('reports/last-quarter', [ReportController::class, 'lastQuarter'])->name('reports.last-quarter');
 

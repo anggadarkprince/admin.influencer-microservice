@@ -6,6 +6,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -30,6 +31,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('upload', [ImageController::class, 'upload'])->name('upload');
     Route::get('export', [OrderController::class, 'export'])->name('order-export');
     Route::get('chart', [DashboardController::class, 'chart'])->name('dashboard-chart');
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/current-month', [ReportController::class, 'currentMonth'])->name('reports.current-month');
+    Route::get('reports/last-quarter', [ReportController::class, 'lastQuarter'])->name('reports.last-quarter');
 
     Route::get('user', [UserController::class, 'user'])->name('users.profile');
     Route::put('users/info', [UserController::class, 'updateInfo'])->name('users.info');

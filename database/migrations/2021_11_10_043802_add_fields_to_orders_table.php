@@ -14,15 +14,15 @@ class AddFieldsToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('code');
-            $table->unsignedBigInteger('user_id');
-            $table->string('influencer_email');
-            $table->string('address')->nullable();
-            $table->string('address2')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->string('zip')->nullable();
-            $table->tinyInteger('complete')->default(0);
+            $table->unsignedBigInteger('user_id')->after('id');
+            $table->string('code')->after('user_id');
+            $table->string('influencer_email')->after('email');
+            $table->string('address')->after('influencer_email')->nullable();
+            $table->string('address2')->after('address')->nullable();
+            $table->string('city')->after('address2')->nullable();
+            $table->string('country')->after('city')->nullable();
+            $table->string('zip')->after('country')->nullable();
+            $table->tinyInteger('complete')->after('zip')->default(0);
         });
     }
 

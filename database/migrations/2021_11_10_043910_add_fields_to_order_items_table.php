@@ -14,8 +14,8 @@ class AddFieldsToOrderItemsTable extends Migration
     public function up()
     {
         Schema::table('order_items', function (Blueprint $table) {
-            $table->decimal('influencer_revenue');
-            $table->decimal('admin_revenue');
+            $table->decimal('influencer_revenue')->after('quantity');
+            $table->decimal('admin_revenue')->after('influencer_revenue');
         });
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Order;
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use DB;

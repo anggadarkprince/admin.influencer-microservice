@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasOneThrough(Role::class, UserRole::class, 'users_id', 'id', 'id', 'role_id');
     }
 
     public function permissions()
@@ -64,5 +64,29 @@ class User extends Authenticatable
     public function hasAccess($access)
     {
         return $this->permissions()->contains($access);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_influencer == 0;
+    }
+
+    public function isInfluencer(): bool
+    {
+        return $this->is_influencer == 1;
+    }
+
+    public function getRevenueAttribute()
+    {
+        $orders = Order::where('user_id', $this->id)->where('complete', 1)->get();
+
+        return $orders->sum(function(Order $order) {
+            return $order->influencer_total;
+        });
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

@@ -23,6 +23,10 @@ class Role extends Model
      */
     public $timestamps = false;
 
+    protected $hidden = [
+        'laravel_through_key'
+    ];
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class, 'role_permissions');

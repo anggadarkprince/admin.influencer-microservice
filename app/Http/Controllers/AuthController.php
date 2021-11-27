@@ -34,7 +34,7 @@ class AuthController extends Controller
             if ($user->isAdmin()) {
                 $user->permissions = $user->permissions();
             } else {
-                $user->setHidden(['role_id', 'email_verified_at', 'password', 'remember_token']);
+                $user->makeHidden(['role_id', 'email_verified_at', 'remember_token']);
             }
 
             return response()->json([

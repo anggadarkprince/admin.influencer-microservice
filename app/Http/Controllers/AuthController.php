@@ -24,14 +24,19 @@ class AuthController extends Controller
 
             if ($user->isInfluencer() && $scope != 'influencer') {
                 return response([
-                    'error' => 'Access denied'
+                    'error' => 'Access denied: cannot access admin scope with influencer user'
                 ], Response::HTTP_FORBIDDEN);
             }
 
             $token = $user->createToken($scope, [$scope])->accessToken;
             $cookie = $this->getCookie($token);
 
-            $user->permissions = $user->permissions();
+            if ($user->isAdmin()) {
+                $user->permissions = $user->permissions();
+            } else {
+                $user->setHidden(['role_id', 'email_verified_at', 'password', 'remember_token']);
+            }
+
             return response()->json([
                 'token' => $token,
                 'user' => $user,
@@ -55,7 +60,7 @@ class AuthController extends Controller
         return cookie(
             env('AUTH_COOKIE_NAME'),
             $token,
-            60,
+            60 * 24,
             null,
             null,
             env('APP_DEBUG') ? false : true,
@@ -67,7 +72,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $cookie = cookie(env('AUTH_COOKIE_NAME'), null, 0);
+        //$cookie = cookie(env('AUTH_COOKIE_NAME'), null, 0);
+
+        $cookie = \Illuminate\Support\Facades\Cookie::forget(env('AUTH_COOKIE_NAME'));
 
         return response(null, Response::HTTP_NO_CONTENT)->withCookie($cookie);
     }
@@ -78,14 +85,11 @@ class AuthController extends Controller
             $request->only('first_name', 'last_name', 'email')
             + [
                 'password' => Hash::make($request->input('password')),
-                'role_id' => 1,
                 'is_influencer' => 1,
             ]
         );
 
-        $token = $user->createToken('admin')->accessToken;
-
-        return response(['user' => $user, 'token' => $token], Response::HTTP_CREATED);
+        return response($user, Response::HTTP_CREATED);
     }
 
     public function user()

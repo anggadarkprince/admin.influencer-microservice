@@ -29,7 +29,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
-        'role_id',
+        'is_influencer',
     ];
 
     /**
@@ -53,12 +53,12 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->hasOneThrough(Role::class, UserRole::class, 'users_id', 'id', 'id', 'role_id');
+        return $this->hasOneThrough(Role::class, UserRole::class, 'user_id', 'id', 'id', 'role_id');
     }
 
     public function permissions()
     {
-        return $this->role->permissions->pluck('name');
+        return optional(optional($this->role)->permissions)->pluck('name');
     }
 
     public function hasAccess($access)
